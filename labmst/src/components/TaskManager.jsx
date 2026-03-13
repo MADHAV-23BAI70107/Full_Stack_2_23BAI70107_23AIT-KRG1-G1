@@ -1,0 +1,70 @@
+import { useState } from "react";
+import useForm from "../hooks/useForm";
+
+const TaskManager = () => {
+  const [tasks, setTasks] = useState([]);
+
+  const { formData, handleChange, resetForm } = useForm({
+    title: "",
+    priority: "Low",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setTasks([...tasks, formData]);
+
+    resetForm();
+  };
+
+  return (
+    <div>
+      <h2>Task Manager</h2>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="title"
+          placeholder="Task Title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+
+        <select
+          name="priority"
+          value={formData.priority}
+          onChange={handleChange}
+        >
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+
+        <button type="submit">Add Task</button>
+      </form>
+
+      <h3>Task List</h3>
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Task Title</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {tasks.map((task, index) => (
+            <tr key={index}>
+              <td>{task.title}</td>
+              <td>{task.priority}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default TaskManager;
